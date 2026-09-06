@@ -34,7 +34,11 @@ export function NvitiChat({
   };
 
   const handleMessage = async (event: WebViewMessageEvent) => {
-    if (new URL(event.nativeEvent.url).origin !== config.allowedOrigin) return;
+    try {
+      if (new URL(event.nativeEvent.url).origin !== config.allowedOrigin) return;
+    } catch (_) {
+      return;
+    }
     const request = parseNativeRequest(event.nativeEvent.data);
     if (!request) return;
     if (!allowedActions.includes(request.action)) {
@@ -85,9 +89,14 @@ export function NvitiChat({
         mixedContentMode="never"
         originWhitelist={[config.allowedOrigin]}
         onShouldStartLoadWithRequest={(request: {url: string}) => {
-          const permitted = new URL(request.url).origin === config.allowedOrigin;
-          if (!permitted) onExternalNavigation?.(request.url);
-          return permitted;
+          try {
+            const parsed = new URL(request.url);
+            const permitted = parsed.origin === config.allowedOrigin;
+            if (!permitted && parsed.protocol === 'https:') onExternalNavigation?.(request.url);
+            return permitted;
+          } catch (_) {
+            return false;
+          }
         }}
         onLoadStart={() => {
           setLoading(true);
