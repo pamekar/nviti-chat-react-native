@@ -7,3 +7,4 @@ export type {
   NvitiNativeRequest,
   NvitiNativeResponse,
 } from './types';
+import 'react-native-url-polyfill/auto';

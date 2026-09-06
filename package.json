@@ -9,7 +9,11 @@
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "files": ["lib", "README.md", "LICENSE"],
+  "files": [
+    "lib",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
@@ -29,6 +33,13 @@
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   },
-  "engines": {"node": ">=20"},
-  "publishConfig": {"access": "public"}
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "react-native-url-polyfill": "^2.0.0"
+  }
 }
