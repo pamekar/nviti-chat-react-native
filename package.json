@@ -11,6 +11,9 @@
   "types": "lib/index.d.ts",
   "files": [
     "lib",
+    "docs",
+    "SECURITY.md",
+    "CHANGELOG.md",
     "README.md",
     "LICENSE"
   ],
