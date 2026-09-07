@@ -1,33 +1,40 @@
-# Nviti Chat for React Native
+# Nviti Chat react-native SDK
 
-An open-source, secure WebView renderer for Nviti conversations. The SDK renders the same forms, menus, bookings, media and handoff experiences as Nviti Web Chat while the host app retains control of native permissions.
+Embed the shared Nviti conversation engine: messages, configured forms, menus,
+bookings and human handoff. Apache-2.0 licensed.
 
-## Install
+## Source installation
 
-```bash
-npm install @nviti/chat-react-native react-native-webview
+Node 20+, React Native and react-native-webview are required. Tested with the
+React Native 0.76 demo. npm registry publication is not yet available.
+```sh
+npm install github:pamekar/nviti-chat-react-native#main react-native-webview
 ```
+The Git dependency builds TypeScript through its prepare script. Pin a released
+tag/commit for deployment. On iOS, install CocoaPods dependencies for your app.
 
-Create a short-lived signed chat session on your server. Pass the returned URL to the SDK; never place an Nviti API credential in a mobile application.
+## Close-only integration
 
+Import `NvitiChat` from `@nviti/chat-react-native`. Use the backend-issued URL:
 ```tsx
 <NvitiChat
-  launchUrl={signedSessionUrl}
-  allowedOrigin="https://bank.nvt.ng"
-  allowedActions={['camera', 'file']}
-  onNativeAction={handleNativeAction}
+  launchUrl={launchUrl}
+  allowedOrigin="https://YOUR_TENANT.nvt.ng"
+  allowedActions={['close']}
+  onNativeAction={async request => {
+    if (request.action !== 'close') throw new Error('Unsupported action');
+    setChatOpen(false);
+    return {handled: true};
+  }}
 />
 ```
 
-Only HTTPS, exact-origin navigation is allowed. Native requests are versioned and must be explicitly allowlisted by the host application.
+Here `setChatOpen` is host React state that unmounts the chat. Provide a native
+Close button too. [Complete demo](https://github.com/pamekar/nviti-demo-app-react-native).
 
-## Development
+Development: `npm ci && npm run typecheck && npm test && npm run build`.
 
-```bash
-npm ci
-npm run typecheck
-npm test
-npm run build
-```
+## Integration guide
 
-Licensed under Apache-2.0.
+Read [secure sessions, lifecycle, native permissions, feature boundaries and troubleshooting](docs/integration.md).
+Never embed a server API credential or trust a client-entered phone number as identity.
