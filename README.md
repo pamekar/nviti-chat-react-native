@@ -8,7 +8,7 @@ bookings and human handoff. Apache-2.0 licensed.
 Node 20+, React Native and react-native-webview are required. Tested with the
 React Native 0.76 demo. npm registry publication is not yet available.
 ```sh
-npm install github:pamekar/nviti-chat-react-native#main react-native-webview
+npm install github:pamekar/nviti-chat-react-native#v0.1.0 react-native-webview
 ```
 The Git dependency builds TypeScript through its prepare script. Pin a released
 tag/commit for deployment. On iOS, install CocoaPods dependencies for your app.
